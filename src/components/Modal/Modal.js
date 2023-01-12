@@ -6,11 +6,11 @@ const modalEl = document.querySelector('#modal-root');
 
 export class Modal extends Component {
     componentDidMount() {
-        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('keydown', this.handleKeyDown);
     };
 
     componentDidUpdate() {
-        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('keydown', this.handleKeyDown);
     };
 
     handleKeyDown = e => {
