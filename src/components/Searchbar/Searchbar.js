@@ -7,9 +7,10 @@ export class Searchbar extends Component {
     state = {
         inputSearch : '',
     };
+    
 
     handleChange = e => {
-        this.setState({ inputSearch: e.currentTarget.value.toLowerCase() });
+        this.setState({ inputSearch: e.target.value.toLowerCase() });
     };
 
     handleSubmit = e => {
@@ -17,11 +18,18 @@ export class Searchbar extends Component {
         if (this.state.inputSearch.trim() === '') {
             alert('Write correct word');
             return;
+        } else {
+            this.props.onSubmit(this.state.inputSearch);
         }
 
-        this.props.onSubmit(this.state.inputSearch);
-        this.setState( {inputSearch: ''} );
+        this.reset();
+        e.target.value = '';
+        console.log(this.state.inputSearch);
     }
+
+    reset = () => {
+        this.setState( {inputSearch: ''} );
+    };
 
     render() {
         return (
