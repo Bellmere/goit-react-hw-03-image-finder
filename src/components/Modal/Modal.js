@@ -1,36 +1,16 @@
-import { Component } from "react";
-import { createPortal } from "react-dom";
 import css from '../Modal/Modal.module.css';
+import PropTypes from 'prop-types';
 
-const modalEl = document.querySelector('#modal-root');
+export const Modal = ({ src, alt, handleClose }) => (
+    <div className={css.modal__backdrop} onClick={handleClose}>
+      <div className={css.modal__content}>
+        <img src={src} alt={alt} />
+      </div>
+    </div>
+  );
 
-export class Modal extends Component {
-    componentDidMount() {
-        window.addEventListener('keydown', this.handleKeyDown);
-    };
-
-    componentDidUpdate() {
-        window.removeEventListener('keydown', this.handleKeyDown);
-    };
-
-    handleKeyDown = e => {
-        if (e.code === 'Escape') {
-            this.props.onClose();
-        }
-    }
-
-    handleBackDropClick = e => {
-        if (e.currentTarget === e.target) {
-            this.props.onClose();
-        }
-    };
-
-    render() {
-        return createPortal(
-            <div className={css.modal__backdrop} onClick={this.handleBackDropClick}>
-                <div className={css.modal__content}>{this.props.children}</div>
-            </div>,
-            modalEl
-        );
-    };
-}
+  Modal.propTypes = {
+    src: PropTypes.string.isRequired,
+    alt: PropTypes.string.isRequired,
+    handleClose: PropTypes.func.isRequired,
+  };
