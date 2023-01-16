@@ -1,15 +1,20 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import { Modal } from "./Modal/Modal";
 import { Searchbar } from "./Searchbar/Searchbar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { fetchImages } from "./Api/Api";
+import { Btn } from "./Button/Button";
+import { Loader } from "./Loader/Loader";
 
 export class App extends Component {
   state = {
     inputSearch : '',
+    isLoading: false,
     showModal: false,
     images: [],
     pageNr: 1,
+    modalImg: '',
+    modalAlt: '',
   };
 
   handleSearchSubmit = async inputSearch => {
@@ -19,7 +24,15 @@ export class App extends Component {
       images: response,
       pageNr: 1,
     });
-    await console.log(this.state.images);
+  };
+
+  onClickMore = async () => {
+    const {inputSearch, pageNr, images} = this.state;
+    const response = await fetchImages(inputSearch, pageNr + 1,)
+    this.setState({
+      images: [...images, ...response],
+      pageNr: pageNr + 1,
+    });
   };
 
   toggleModal = () => {
@@ -29,12 +42,30 @@ export class App extends Component {
   };
 
   render() {
+    const {isLoading, showModal, modalImg, modalAlt} = this.setState;
     return (
       <div>
-        <Searchbar onSubmit={this.handleSearchSubmit} />
-        <ImageGallery 
-        images = {this.state.images}
-        />
+        {isLoading? (
+          <Loader />
+        ) : (
+          <React.Fragment>
+              <Searchbar onSubmit={this.handleSearchSubmit} />
+              <ImageGallery 
+              images = {this.state.images}
+              />
+              {this.state.images.length > 0 ? (
+              <Btn 
+              onClick={this.onClickMore}
+              />
+              ) : null}
+          </React.Fragment>
+        )}
+        {/* {showModal ? (
+          <Modal
+          src={modalImg}
+          alt={modalAlt}
+          />
+        ) : null} */}
       </div>
     );
   };
