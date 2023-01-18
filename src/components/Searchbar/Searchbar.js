@@ -20,11 +20,9 @@ export class Searchbar extends Component {
             return;
         } else {
             this.props.onSubmit(this.state.inputSearch);
+            this.reset();
+            e.target.reset();
         }
-
-        this.reset();
-        e.target.value = '';
-        console.log(this.state.inputSearch);
     }
 
     reset = () => {

@@ -34,13 +34,11 @@ export class App extends Component {
 
   onClickMore = async () => {
     const {inputSearch, pageNr, images} = this.state;
-    this.toggleLoad();
     const response = await fetchImages(inputSearch, pageNr + 1,)
     this.setState({
       images: [...images, ...response],
       pageNr: pageNr + 1,
     });
-    this.toggleLoad();
   };
 
   toggleLoad = () => {
